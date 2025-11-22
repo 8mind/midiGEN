@@ -1,5 +1,5 @@
 """
-Override variables in train.py for 'from-scratch' training
+Override variables in train.py
 """
 
 import argparse
