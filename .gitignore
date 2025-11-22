@@ -10,3 +10,4 @@
 /wandb
 /data/
 *.bin
+*.pkl
