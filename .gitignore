@@ -1,0 +1,10 @@
+/.venv
+/.vscode
+/debug.py
+/deprecated.py
+/karpathy
+/lmd_full
+/midi_data_processing_old.py
+/out
+/tears_in_heaven.mid
+/wandb
