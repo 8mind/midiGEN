@@ -28,6 +28,12 @@ class MidiDataProcessing:
         self.time_step = time_step
         self.longest_silence = longest_silence
         self.program_select = program_select
+        
+        # generate the vocabulary and store it as self.vocab
+        self.vocab = self.build_vocab()
+        # a dict to lookup the index for a word (a.k.a. a 'token') in the vocabulary
+        self.TtoI = {w: i for i, w in enumerate(self.vocab)} 
+
         # this is the list of instrument families as per General MIDI standard
         self.instrument_families = [
             'Piano',            # programs 0-7
@@ -47,24 +53,14 @@ class MidiDataProcessing:
             'Percussive',       # programs 112-119
             'Sound Effects'     # programs 120-127
         ]
-        # generate the vocabulary and store it as self.vocab
-        self.vocab = self.build_vocab()
-        self.vocab_size = len(self.vocab)
-        # a dict to lookup the index for a word (a.k.a. a 'token') in the vocabulary
-        self.TtoI = {w: i for i, w in enumerate(self.vocab)} 
-        self.del_tok_id = self.TtoI['<delimiter>']  # index of delimiter token
-        self.empty_tok_id = self.TtoI['<empty>']  # index of empty token
-        self.freeze_tok_id = self.TtoI['<freeze>']  # index of freeze token
-
-
         # process the program_select argument further, storing it as self.program_list
-        if isinstance(program_select, str):
+        if isinstance(self.program_select, str):
             self.program_list = []
-            for p in program_select.split("/"):
+            for p in self.program_select.split("/"):
                 idx = self.instrument_families.index(p.title())
                 self.program_list.extend(range(idx * 8, (idx + 1) * 8))
         else:
-            self.program_list = program_select
+            self.program_list = self.program_select
 
 
 
@@ -77,7 +73,7 @@ class MidiDataProcessing:
 
         q_pitches = sorted(list(set([self._round_to(p, 64, max_=8191, min_=-8192) for p in
                                    range(-8192, 8192)])))  # these are the allowed pitches after quantisation
-        
+        # the previous line is equivalent to the following one
         q_pitches = [-8192 + 64 * i for i in range(256)] + [8191]
 
         # begin with the special tokens
@@ -289,17 +285,14 @@ class MidiDataProcessing:
             "time_step": self.time_step,
             "longest_silence": self.longest_silence,
             "program_select": self.program_select,
-            "vocab_size": self.vocab_size,
+            "vocab_size": len(self.vocab),
             "val_tokens": out['val_tokens'],
             "train_tokens": out['train_tokens'],
             "total_tokens": out['val_tokens'] + out['train_tokens'],
             "val_frac": val_frac,
             "shuffle": shuffle,
             "seed": seed,
-            "del_tok_id": self.del_tok_id,
-            "empty_tok_id": self.empty_tok_id,
-            "freeze_tok_id": self.freeze_tok_id,
-            "total_MIDI_files_processed": len(midi_filepaths)
+            "total_MIDI_files_processed": len(midi_filepaths),
         }
         meta_filepath = os.path.join(out_dir, "meta.pkl")
         with open(meta_filepath, 'wb') as f:

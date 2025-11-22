@@ -1,5 +1,5 @@
 """
-Sample from a trained model
+Sample from a trained model. The files are saved under os.path.join(out_dir, "generate").
 """
 import os
 import pickle
@@ -13,6 +13,7 @@ import datetime
 out_dir = 'out' # directory where best model is saved
 num_samples = 1 # number of samples to generate
 gen_len = 60 # desired length of generated sample in seconds
+play_ = False # if True, the sample plays out-loud after each generation
 temperature = 1.0 # 1.0 = no change, < 1.0 = less random, > 1.0 = more random, in predictions
 top_k = 2 # retain only the top_k most likely tokens, clamp others to have 0 probability
 seed = None
@@ -63,11 +64,11 @@ MDP = MidiDataProcessing(time_step=meta['time_step'],
 # start_ids = start_ids[:500]
 
 # the vocab index of the notes C, A, B respectively
-C = MDP.vocab("note_on note=60 velocity=88")
-A = MDP.vocab("note_on note=57 velocity=88")
-B = MDP.vocab("note_on note=59 velocity=88")
+C = MDP.TtoI["note_on note=60 velocity=88"]
+A = MDP.TtoI["note_on note=57 velocity=88"]
+B = MDP.TtoI["note_on note=59 velocity=88"]
 # indices for a silence of 0.5s
-silence = [meta['empty_tok_id']] * round(0.5 / meta['time_step'])
+silence = [MDP.TtoI["<empty>"]] * round(0.5 / meta['time_step'])
 # let start_ids be the simple tune C A C B with 0.5s in between
 start_ids = [C] + silence + [A] + silence + [C] + silence + [B] 
 
@@ -82,4 +83,5 @@ with torch.no_grad():
         
             pth = MDP.tokens_to_midi(y[0].tolist(), out_filepath=os.path.join(out_dir, "generate", f"{datetime.datetime.now().strftime('%Y%m%d_%H%M%S_%f')}.mid"))
             
-            # MDP.play_midi(pth)
+            if play_:
+                MDP.play_midi(pth)
