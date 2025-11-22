@@ -6,9 +6,9 @@ The sequential nature of the filetype probably makes it ideal for sequence model
 
 The goal is to train the decoder on the Lakh MIDI dataset (178,000 songs) and then generate music with the best model.
 
-NOTE: the files `model.py`, `configurator.py` are taken VERBATIM from <https://github.com/karpathy/nanoGPT/tree/master>. `train.py` is also verbatim from `karpathy/nanoGPT` but for two lines: line 263 and 276.
+NOTE: the files `model.py`, `configurator.py` are taken VERBATIM from <https://github.com/karpathy/nanoGPT/tree/master>. `train.py` is also taken verbatim from `karpathy/nanoGPT` but for two lines: line 263 and 276.
 
-OTHER NOTES: Miscellaneous but useful stuff is stored in `miscellaneous.py`.
+OTHER NOTES: miscellaneous but useful stuff is stored in `miscellaneous.py`.
 
 Get started:
 
@@ -22,12 +22,12 @@ Get started:
 
 2. Run `python data/Lakh/prepare.py` (imports from `midi_data_processing.py`). This should generate `data/Lakh/meta.pkl`, `data/Lakh/train.bin` and `data/Lakh/val.bin`.
 
-3. Run `torchrun --standalone --nproc_per_node=8 train.py config/train_midigen.py` (imports from `model.py` and executes `configurator.py`). 
+3. Run `torchrun --standalone --nproc_per_node=8 train.py config/train_midigen.py` (`train.py` imports from `model.py` and executes `configurator.py` at some point). 
 This should create `out/ckpt.pt` (the parameters of the best model).\
 To modify parameters through terminal do something like `torchrun --standalone --nproc_per_node=8 train.py --batch_size=32 config/train_midigen.py --EPOCHS=20` (i.e. put lowercase variables BEFORE `config/train_midigen.py` and uppercase variables AFTER `config/train_midigen.py`). 
 This is due to the specific way `configurator.py` deals with the command line arguments (`configurator.py` is executed at line 77 in `train.py`).
 
-4. Finally run `python sample.py --play_=True` to generate a sample at `out/generate/*.mid`, and play it out-loud after generation.
+4. Finally run `python sample.py --play_=True` (`sample.py` executes `configurator.py` at some point too) to generate a sample at `out/generate/*.mid`, and play it out-loud after generation.
 
 What does a typical 1 minute generated sample sound like? Let's hear:
 

@@ -95,7 +95,7 @@ class MidiDataProcessing:
 
         vocab.extend([f"pitchwheel pitch={pitch}" for pitch in q_pitches])
 
-        #vocab.extend([f"PAD_{i}" for i in range(2 ** 16 - len(vocab))])  # add padding tokens to make vocab size equal to 2**16
+        vocab.extend([f"PAD_{i}" for i in range(2 ** 16 - len(vocab))])  # add padding tokens to make vocab size equal to 2**16 -- the number of padding tokens is 246
 
         return vocab
 
