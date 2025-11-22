@@ -6,7 +6,7 @@ The sequential nature of the filetype probably makes it ideal for sequence model
 
 The goal is to train the decoder on the Lakh MIDI dataset (178,000 songs) and then generate music with the best model.
 
-NOTE: the files `model.py`, `configurator.py` are taken VERBATIM from <https://github.com/karpathy/nanoGPT/tree/master>. `train.py` is also taken verbatim from `karpathy/nanoGPT` but for two lines: line 263 and 276. `sample.py` is also from `karpathy/nanoGPT` but is 50% changed.
+NOTE: the files `model.py`, `configurator.py` are taken VERBATIM from <https://github.com/karpathy/nanoGPT/tree/master>. `train.py` is also taken verbatim from `karpathy/nanoGPT` but for two lines: line 263 and 276. `sample.py` is also from `karpathy/nanoGPT` but is ~50% changed.
 
 OTHER NOTES: miscellaneous but possibly useful stuff is stored in `miscellaneous.py`.
 
@@ -23,7 +23,7 @@ Get started:
 2. Run `python data/Lakh/prepare.py` (imports from `midi_data_processing.py`). This should generate `data/Lakh/meta.pkl`, `data/Lakh/train.bin` and `data/Lakh/val.bin`.
 
 3. Run `torchrun --standalone --nproc_per_node=8 train.py config/train_midigen.py` (`train.py` imports from `model.py` and executes `configurator.py` at some point). 
-This should create `out/ckpt.pt` (the parameters of the best model).\
+This should create `out/ckpt.pt` (the parameters of the best, trained model).\
 To modify parameters through terminal do something like `torchrun --standalone --nproc_per_node=8 train.py --batch_size=32 config/train_midigen.py --EPOCHS=20` (i.e. put lowercase variables BEFORE `config/train_midigen.py` and uppercase variables AFTER `config/train_midigen.py`). 
 This is due to the specific way `configurator.py` deals with the command line arguments (`configurator.py` is executed at line 77 in `train.py`).
 
