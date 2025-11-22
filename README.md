@@ -30,6 +30,6 @@ This is due to the specific way `configurator.py` deals with the command line ar
 4) Finally run `python sample.py --play_=True` to generate a sample at `out/generate/*.mid`, and play it out-loud after generation.
 
 What does a typical 1 minute generated sample sound like? Let's hear:
-<INSERT>
+INSERT HERE
 
 Sounds pleasant enough...
