@@ -6,9 +6,9 @@ The sequential nature of the filetype probably makes it ideal for sequence model
 
 The goal is to train the decoder on the Lakh MIDI dataset (178,000 songs) and then generate music with the best model.
 
-(NOTE: the files `model.py`, `configurator.py` are taken VERBATIM from <https://github.com/karpathy/nanoGPT/tree/master>. `train.py` is also verbatim from `karpathy/nanoGPT` but for two lines: line 263 and 276.)
+NOTE: the files `model.py`, `configurator.py` are taken VERBATIM from <https://github.com/karpathy/nanoGPT/tree/master>. `train.py` is also verbatim from `karpathy/nanoGPT` but for two lines: line 263 and 276.
 
-(Miscellaneous but useful stuff is stored in `miscellaneous.py`)
+OTHER NOTES: Miscellaneous but useful stuff is stored in `miscellaneous.py`.
 
 Get started:
 
@@ -30,6 +30,6 @@ This is due to the specific way `configurator.py` deals with the command line ar
 4) Finally run `python sample.py --play_=True` to generate a sample at `out/generate/*.mid`, and play it out-loud after generation.
 
 What does a typical 1 minute generated sample sound like? Let's hear:
-
+<INSERT>
 
 Sounds pleasant enough...
