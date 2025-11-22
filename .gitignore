@@ -8,6 +8,6 @@
 /out
 /tears_in_heaven.mid
 /wandb
-/data/
 *.bin
 *.pkl
+.DS_Store
