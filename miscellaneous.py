@@ -1,3 +1,5 @@
+# possibly useful miscellaneous information
+
 GM_FAMILIES = [
     "Piano",            # Programs 0-7
     "Chromatic Percussion", # Programs 8-15

@@ -1,4 +1,6 @@
 """
+Tokenises the Lakh MIDI dataset and saves the tokens as /train.bin and /val.bin alongside a /meta.pkl metadata file.
+
 Download the Lakh MIDI dataset (on terminal):
 wget http://hog.ee.columbia.edu/craffel/lmd/lmd_full.tar.gz
 tar -xf lmd_full.tar.gz

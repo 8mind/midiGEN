@@ -1,5 +1,5 @@
 """
-Sample from a trained model. The files are saved under os.path.join(out_dir, "generate").
+Generate samples from the best trained model. The files are saved under os.path.join(out_dir, "generate").
 """
 import os
 import pickle

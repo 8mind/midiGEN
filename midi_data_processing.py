@@ -23,7 +23,6 @@ class MidiDataProcessing:
         """
         `program_select` can be either a list of uint7 integers like [0, 3, 64, 127] or a string in the format "Synth Lead/Pipe/Bass" (case in-sensitive).
         `longest_silence` tell us to cap the duration of silences to `longest_silence` (in seconds). This is to avoid unreasonably long lulls in the performance of an instrument (for example, the guitar might play for only 10 seconds and never again in a song).
-        The reason for having `vocab_block_size` is to speed up training through efficient memory handling for matrix multiplication (see Andrej Karpathy nanoGPT video).
         """
         self.time_step = time_step
         self.longest_silence = longest_silence
@@ -66,15 +65,16 @@ class MidiDataProcessing:
 
     def build_vocab(self) -> list[str]:
         """
-        Returns a vocabulary whose size is a multiple of `vocab_block_size`.
-        MIDI messages are quantised as follows: velocity is quantised in units of `velocity_step`; value is quantised in units of `value_step`; and pitch is quantised in units of `pitch_step` -- subject to exceptions (see "special cases" later).
-        See https://mido.readthedocs.io/en/stable/message_types.html and https://gemini.google.com/share/8b0ceacfae1a (this one especially for the special cases) for information on the kinds of MIDI messages.
+        Returns a vocabulary (of size 2**16) of MIDI messages.
+        If a MIDI message has the `pitch` attribute it is rounded to the nearest multiple of 64 (quantisation of the pitch attribute). The reason we perform quantisation is to keep the vocabulary size from exceeding 2**16. (Rounding of the pitch attribute shouldn't affect song fidelity much at all.)
+        See https://mido.readthedocs.io/en/stable/message_types.html and https://gemini.google.com/share/8b0ceacfae1a for information on the kinds of MIDI messages.
         """
 
         q_pitches = sorted(list(set([self._round_to(p, 64, max_=8191, min_=-8192) for p in
                                    range(-8192, 8192)])))  # these are the allowed pitches after quantisation
+        
         # the previous line is equivalent to the following one
-        q_pitches = [-8192 + 64 * i for i in range(256)] + [8191]
+        q_pitches = [-8192 + 64 * i for i in range(256)] + [8191] # these are the allowed pitches after quantisation
 
         # begin with the special tokens
         vocab = ["<delimiter>", "<empty>", "<freeze>"]
@@ -95,7 +95,7 @@ class MidiDataProcessing:
 
         vocab.extend([f"pitchwheel pitch={pitch}" for pitch in q_pitches])
 
-        vocab.extend([f"PAD_{i}" for i in range(2 ** 16 - len(vocab))])  # add padding tokens to make vocab size equal to 2**16 -- the number of padding tokens is 246
+        vocab.extend([f"PAD_{i}" for i in range(2 ** 16 - len(vocab))])  # add padding tokens to make vocab size equal to 2**16 (the number of padding tokens is 246). the reason for rounding up the vocabulary size to a "nice number" in this way is to potentially speed up matrix multiplication (see Andrej Karpathy nanoGPT video)
 
         return vocab
 
@@ -103,8 +103,8 @@ class MidiDataProcessing:
 
     def quantise_message(self, msg):
         """
-        Takes a MIDI message and returns a "quantised" version. The quantised version has velocity, value and pitch attributes rounded to the nearest multiple of self.velocity_step, self.value_step and self.pitch_step respectively.
-        The reason we perform quantisation is to reduce the vocabulary size (choosing small quantisation steps retains song fidelity -- step=1 retains all fidelity).
+        Takes a MIDI message and returns a "quantised" version. The quantised version has pitch attribute rounded to the nearest multiple of 64.
+        The reason we perform quantisation is to keep the vocabulary size from exceeding 2**16 (rounding of pitch attribute shouldn't affect song fidelity much at all).
         """
         msg_copy = msg.copy()  # copy the message to avoid changing the original
 
@@ -195,6 +195,7 @@ class MidiDataProcessing:
         # Create a new MIDI file and track. The default ticks per beat is 480 and the default tempo is 500000 microseconds per beat (120 BPM) -- for a default of 960 ticks per second. 
         # When messages are added to the track, their time attribute is specified in "delta" (i.e. difference) ticks. This is different to how the time attribute appears when `for msg in mido.MidiFile(filename):` is called -- it appears as delta seconds. 
         # Note also that when `for track in mido.MidiFile(filename): for msg in track:` (i.e. when messages are read from the track) is called (which I don't make use of), the time attribute appears in delta ticks.
+        
         os.makedirs(os.path.dirname(out_filepath), exist_ok=True)  # ensure the output directory exists
 
         midi_out = mido.MidiFile()

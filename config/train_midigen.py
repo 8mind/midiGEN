@@ -1,5 +1,5 @@
 """
-Override variables in train.py
+Override variables in train.py to train midiGEN decoder
 """
 
 import argparse

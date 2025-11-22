@@ -6,9 +6,9 @@ The sequential nature of the filetype probably makes it ideal for sequence model
 
 The goal is to train the decoder on the Lakh MIDI dataset (178,000 songs) and then generate music with the best model.
 
-NOTE: the files `model.py`, `configurator.py` are taken VERBATIM from <https://github.com/karpathy/nanoGPT/tree/master>. `train.py` is also taken verbatim from `karpathy/nanoGPT` but for two lines: line 263 and 276.
+NOTE: the files `model.py`, `configurator.py` are taken VERBATIM from <https://github.com/karpathy/nanoGPT/tree/master>. `train.py` is also taken verbatim from `karpathy/nanoGPT` but for two lines: line 263 and 276. `sample.py` is also from `karpathy/nanoGPT` but is 50% changed.
 
-OTHER NOTES: miscellaneous but useful stuff is stored in `miscellaneous.py`.
+OTHER NOTES: miscellaneous but possibly useful stuff is stored in `miscellaneous.py`.
 
 Get started:
 
