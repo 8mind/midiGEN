@@ -1,4 +1,4 @@
-A decoder-only transformer (of the exact same architecture as GPT-2 124M) to learn the patterns in MIDI file data. 
+A decoder-only transformer (of the same architecture as GPT-2 124M) to learn the patterns in MIDI file data. 
 
 MIDI files are a way to store instrumental music as a sequence of events such as "note_on note=60 time=0" and "note_off note=60 time=10" (without storing the actual audio). 
 
