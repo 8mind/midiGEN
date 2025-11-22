@@ -10,4 +10,4 @@
 /wandb
 *.bin
 *.pkl
-.DS_Store
+*.DS_Store
