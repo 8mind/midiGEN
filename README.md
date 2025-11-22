@@ -12,23 +12,23 @@ OTHER NOTES: Miscellaneous but useful stuff is stored in `miscellaneous.py`.
 
 Get started:
 
-0) Dependencies: `pip install torch numpy wandb tqdm mido pygame` -- `mido` to read MIDI files and `pygame` to play a MIDI file out-loud.
+0. Dependencies: `pip install torch numpy wandb tqdm mido pygame` -- `mido` to read MIDI files and `pygame` to play a MIDI file out-loud.
 
-1) Download the Lakh Midi dataset: 
+1. Download the Lakh Midi dataset: 
 ```
 wget http://hog.ee.columbia.edu/craffel/lmd/lmd_full.tar.gz
 tar -xf lmd_full.tar.gz
 ```
 
-2) Run `python data/Lakh/prepare.py` (imports from `midi_data_processing.py`). This should generate `data/Lakh/meta.pkl`, `data/Lakh/train.bin` and `data/Lakh/val.bin`.
+2. Run `python data/Lakh/prepare.py` (imports from `midi_data_processing.py`). This should generate `data/Lakh/meta.pkl`, `data/Lakh/train.bin` and `data/Lakh/val.bin`.
 
-3) Run `torchrun --standalone --nproc_per_node=8 train.py config/train_midigen.py` (imports from `model.py` and executes `configurator.py`). 
+3. Run `torchrun --standalone --nproc_per_node=8 train.py config/train_midigen.py` (imports from `model.py` and executes `configurator.py`). 
 This should create `out/ckpt.pt` (the parameters of the best model). 
 
-To modify parameters through terminal do something like `torchrun --standalone --nproc_per_node=8 train.py --batch_size=32 config/train_midigen.py --EPOCHS=20` (i.e. put lowercase variables BEFORE `config/train_midigen.py` and uppercase variables AFTER `config/train_midigen.py`). 
-This is due to the specific way `configurator.py` deals with the command line arguments (`configurator.py` is executed at line 77 in `train.py`).
+    To modify parameters through terminal do something like `torchrun --standalone --nproc_per_node=8 train.py --batch_size=32 config/train_midigen.py --EPOCHS=20` (i.e. put lowercase variables BEFORE `config/train_midigen.py` and uppercase variables AFTER `config/train_midigen.py`). 
+    This is due to the specific way `configurator.py` deals with the command line arguments (`configurator.py` is executed at line 77 in `train.py`).
 
-4) Finally run `python sample.py --play_=True` to generate a sample at `out/generate/*.mid`, and play it out-loud after generation.
+4. Finally run `python sample.py --play_=True` to generate a sample at `out/generate/*.mid`, and play it out-loud after generation.
 
 What does a typical 1 minute generated sample sound like? Let's hear:
 
