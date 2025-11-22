@@ -8,3 +8,5 @@
 /out
 /tears_in_heaven.mid
 /wandb
+/data/
+*.bin
