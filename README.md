@@ -29,7 +29,7 @@ This should create `out/ckpt.pt` (the parameters of the best, trained model).\
 To modify parameters through terminal do something like `torchrun --standalone --nproc_per_node=8 train.py --batch_size=32 config/train_midigen.py --EPOCHS=20` (i.e. put lowercase variables BEFORE `config/train_midigen.py` and uppercase variables AFTER `config/train_midigen.py`). 
 This is due to the specific way `configurator.py` deals with the command line arguments (`configurator.py` is executed at line 77 in `train.py`).
 
-4. Finally run `python sample.py --play_=True` (`sample.py` imports from `midi_data_processing.py` and executes `configurator.py` at some point) to generate a sample at `out/generate/*.mid`, and play it out-loud after generation.
+4. Finally run `python sample.py --play_=True` (`sample.py` imports from `midi_data_processing.py` and executes `configurator.py` at some point too) to generate a sample at `out/generate/*.mid` and play it out-loud after generation.
 
 What does a typical 1 minute generated sample sound like? Let's hear:
 
