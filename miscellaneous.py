@@ -1,4 +1,6 @@
-# possibly useful miscellaneous information
+"""
+Possibly useful miscellaneous information.
+"""
 
 GM_FAMILIES = [
     "Piano",            # Programs 0-7

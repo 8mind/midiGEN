@@ -1,3 +1,7 @@
+"""
+A single class to handle MIDI data processing.
+"""
+
 import mido
 import os
 import math
@@ -84,7 +88,7 @@ class MidiDataProcessing:
 
         vocab.extend([f"polytouch note={note} value={value}" for note in range(128) for value in range(128)])
 
-        # some controls are special:
+        # some controls are special: (see https://gemini.google.com/share/8b0ceacfae1a)
         special_controls = [120, 121, 123, 124, 125, 127]
         vocab.extend([f"control_change control={control} value={value}" for control in range(128) if control not in special_controls for value in range(128)]) # the value for all but the special tokens is uint8
         vocab.extend([f"control_change control={control} value=0" for control in special_controls]) # special_controls can only take the value 0
